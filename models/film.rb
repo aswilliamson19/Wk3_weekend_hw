@@ -24,5 +24,31 @@ class Film
     SqlRunner.run(sql, values)
   end
 
+  def self.delete_all
+    sql = "DELETE FROM films"
+    SqlRunner.run(sql)
+  end
+
+#  To see which customers are booked on a specific film
+
+  def customers_booked
+    sql = "SELECT customers.* FROM customers
+    INNER JOIN tickets ON customers.id = tickets.customer_id
+    WHERE film_id = $1"
+    values = [@id]
+    result = SqlRunner.run(sql,values)
+    return result.map{ |customer| Customer.new(customer)}
+  end
+
+# Counts the number of customers are booked on each film
+  def number_of_customers_booked
+    sql = "SELECT customers.* FROM customers
+    INNER JOIN tickets ON customers.id = tickets.customer_id
+    WHERE film_id = $1"
+    values = [@id]
+    result = SqlRunner.run(sql,values)
+    return result.map{ |customer| Customer.new(customer)}.count
+  end
+
 
 end
