@@ -50,5 +50,15 @@ class Film
     return result.map{ |customer| Customer.new(customer)}.count
   end
 
+# Returns the price of a ticket to specific film
+  def price
+    sql = "SELECT price FROM films WHERE id = $1"
+    values = [@id]
+    price_data = SqlRunner.run(sql, values)[0]
+    return price_data["price"].to_i
+  end
+
+
+
 
 end
